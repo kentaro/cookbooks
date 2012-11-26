@@ -15,7 +15,6 @@ end
 
 execute 'download' do
   command 'wget http://prdownloads.sourceforge.net/subsonic/subsonic-4.7.deb -O /tmp/subsonic.deb'
-  notifies :run, resources(execute: :install)
 end
 
 execute 'install' do
