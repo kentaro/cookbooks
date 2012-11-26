@@ -1,18 +1,27 @@
 set :user, ENV['USER'] || `whoami`
 
-set :scm,       :git
-set :repository '.'
-set :deploy_to, '/tmp/chef'
+set :scm,        :git
+set :repository, '.'
+set :deploy_to,  '/tmp/chef'
+
+set :default_run_options, :pty => true
+
+task :setup do
+  sudo 'apt-get update'
+  sudo 'apt-get install -y build-essential git'
+end
 
 namespace :chef do
-  task :setup, :pty => true do
-    sudo 'apt-get install ruby1.9.3'
-    sudo 'gem install chef'
+  task :setup do
+    sudo 'apt-get install -y ruby1.9.3'
+    sudo 'gem install chef --no-rdoc --no-ri'
   end
 
-  task :kentarok_org do
-    sudo <<-"EOS", :pty => true
-      chef-solo -c #{deploy_to}/current/config/solo.rb -j #{deploy_to}/current/config/kentarok.org.json
+  %w(kentarok_org).each do |name|
+    task name.to_sym do
+      sudo <<-"EOS"
+        chef-solo -c #{deploy_to}/current/config/solo.rb -j #{deploy_to}/current/config/#{name}.json
 EOS
+    end
   end
 end
