@@ -24,7 +24,7 @@ namespace :chef do
     sudo 'gem install chef --no-rdoc --no-ri'
   end
 
-  %w(kentarok.org).each do |name|
+  %w(kentarok_org).each do |name|
     task name.to_sym do
       sudo <<-"EOS"
         chef-solo -c #{deploy_to}/current/config/solo.rb -j #{deploy_to}/current/config/#{name}.json
