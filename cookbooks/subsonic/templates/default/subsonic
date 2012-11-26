@@ -1,0 +1,2 @@
+SUBSONIC_ARGS="--max-memory=150"
+SUBSONIC_USER=kentaro
