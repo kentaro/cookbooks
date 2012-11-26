@@ -3,12 +3,19 @@ set :user, ENV['USER'] || `whoami`
 set :scm,        :git
 set :repository, '.'
 set :deploy_to,  '/tmp/chef'
+set :deploy_via, :copy
 
+set :use_sudo, false
 set :default_run_options, :pty => true
 
 task :setup do
   sudo 'apt-get update'
   sudo 'apt-get install -y build-essential git'
+  deploy.setup
+end
+
+task :update do
+  deploy.update
 end
 
 namespace :chef do
